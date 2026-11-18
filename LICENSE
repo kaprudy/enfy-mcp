@@ -1,0 +1,13 @@
+Documentatie van de MCP-server van enfy.nl (README.md en server.json)
+Copyright (c) 2026 enfy.nl
+
+De tekst in deze repository valt onder Creative Commons Naamsvermelding 4.0
+Internationaal (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/deed.nl
+Naam, merk en logo van enfy.nl (icon-512.png, icon.svg) vallen daar niet onder.
+
+The text in this repository is licensed under Creative Commons Attribution 4.0
+International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+The enfy.nl name, brand and logo (icon-512.png, icon.svg) are not covered.
+
+This repository contains documentation only. The MCP server runs at
+https://enfy.nl/mcp and its source code is not public.
