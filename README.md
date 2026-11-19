@@ -3,7 +3,7 @@
 Een gratis, openbare [MCP-server](https://modelcontextprotocol.io) waarmee een AI-assistent (Claude, ChatGPT, Cursor, VS Code en andere MCP-clients) **stroom- en gascontracten van alle Nederlandse energieleveranciers** voor je kan doorrekenen. De bedragen komen uit dezelfde rekenkern als de vergelijker op [enfy.nl](https://enfy.nl): met energiebelasting, netbeheerkosten, teruglevering en btw, per maand doorgerekend.
 
 - **Adres:** `https://enfy.nl/mcp`
-- **Transport:** Streamable HTTP (`POST /mcp`), versie 1.6.4 (wijzigingen: [onderaan](#wijzigingen))
+- **Transport:** Streamable HTTP (`POST /mcp`), versie 1.6.6 (wijzigingen: [onderaan](#wijzigingen))
 - **Inloggen of API-sleutel:** niet nodig
 - **Alle tools zijn alleen-lezen.** Ze sluiten niets af, versturen niets en wijzigen niets.
 
@@ -32,7 +32,7 @@ Elk antwoord linkt naar een pagina op enfy.nl met dezelfde cijfers, zodat je de 
 | `prijswijzigingen` | Gecontroleerde tariefwijzigingen van leveranciers, nieuwste ingangsdatum eerst, met het effect per maand voor een gemiddeld huishouden. |
 | `prijshistorie` | Stroom, gas, energiebelasting en day-ahead-prijzen per jaar en over de laatste 13 maanden, met bronnen. |
 | `energiebelasting` | Schijven van de energiebelasting en de belastingvermindering voor een jaar, excl. en incl. btw. |
-| `thuisbatterij_berekenen` | Of een thuisbatterij loont: per uur doorgerekend over de afgelopen 12 maanden, met advies, besparing per jaar, terugverdientijd, beste grootte en de verliezen bij laden en ontladen. |
+| `thuisbatterij_berekenen` | Of een thuisbatterij loont: per uur doorgerekend over de afgelopen 12 maanden, met advies, besparing per jaar, terugverdientijd, beste grootte en de verliezen bij laden en ontladen, plus drie echte voorbeelddagen per uur (prijs, laden en ontladen) voor dat huis en die batterij. |
 | `methode_en_dekking` | Hoe we vergelijken (volgorde alleen op kosten, wat wel en niet meetelt, privacy) en hoe volledig en actueel de gegevens zijn: leveranciers en producten in de vergelijking, laatste tariefcontrole, marktprijzen en de jaren van energiebelasting en netbeheer. Optioneel voor één leverancier. |
 
 Daarnaast:
@@ -141,7 +141,7 @@ Vrij te gebruiken met bronvermelding: noem "enfy.nl" als bron en link naar de pa
 
 **enfy.nl energievergelijker** is a free, public MCP server for the Dutch energy market. It lets an AI assistant compare electricity and gas contracts from all Dutch suppliers for a household's own usage, with energy tax, grid costs, feed-in and VAT included. Tool output is in Dutch (questions in English work too; the tool descriptions carry English keywords) and every answer links to a page on enfy.nl with the same figures. Inputs that were not given are listed in `defaults_used` (e.g. average usage or grid operator), so the assistant can ask a follow-up question.
 
-- **Endpoint:** `https://enfy.nl/mcp` (Streamable HTTP, version 1.6.4). No account or API key. Changelog: see [Wijzigingen](#wijzigingen) below.
+- **Endpoint:** `https://enfy.nl/mcp` (Streamable HTTP, version 1.6.6). No account or API key. Changelog: see [Wijzigingen](#wijzigingen) below.
 - **Tools (all read-only):** `vergelijk_energie` (cheapest contracts), `eigen_contract_vergelijken` (your current contract vs. the market), `dynamisch_of_vast` (dynamic vs. fixed), `netbeheerder` (grid operator and grid costs from a 4-digit postcode), `stroomprijs_vandaag` and `gasprijs_vandaag` (dynamic prices), `leverancier_tarieven` (one supplier's tariffs), `prijswijzigingen` (price changes), `prijshistorie` (price history), `energiebelasting` (energy tax), `thuisbatterij_berekenen` (does a home battery pay off) and `methode_en_dekking` (how we rank, coverage of suppliers and how current the data is, new in 1.6.0).
 - **Connect:** Claude (Settings → Connectors → Add custom connector), ChatGPT (developer mode → create connector, no authentication), Claude Code (`claude mcp add --transport http energievergelijker https://enfy.nl/mcp`), Cursor and VS Code (HTTP server with the URL above, see the JSON snippets in the Dutch section), Gemini CLI (`gemini extensions install https://github.com/kaprudy/enfy-mcp`).
 - **Privacy:** no personal data. Only the first 4 digits of a postcode are accepted; house numbers are refused. No cookies, no IP addresses stored. Daily counts per tool, client family and outcome, and a minimised log of tool calls (numbers and choices only, no free text, no IP) kept for 90 days to check our answers.
@@ -153,6 +153,12 @@ Vrij te gebruiken met bronvermelding: noem "enfy.nl" als bron en link naar de pa
 ---
 
 ## Wijzigingen
+
+### 1.6.6 (19-11-2026)
+- **`thuisbatterij_berekenen`: verlies in de voorbeelddagen.** Per dag `loss_kwh` (verlies bij laden en ontladen), `grid_charge_price_micro` (gemiddelde prijs van de stroom die uit het net in de batterij ging) en `grid_charge_price_after_loss_micro` (wat een kWh uit de batterij daardoor kost: ÷ het rendement), en `day_profiles.round_trip_efficiency`. Het verlies zat al in de opbrengst en in de keuzes van de slimme sturing; nu staat het er ook als getal.
+
+### 1.6.5 (19-11-2026)
+- **`thuisbatterij_berekenen`: voorbeelddagen per uur** (`day_profiles`). Voor het huis en de batterij van het antwoord drie echte dagen uit de afgelopen 12 maanden, per uur de prijs van kopen en terugleveren (incl. btw), de zonnestroom, het verbruik, laden (zon of net), ontladen (huis of net) en wat er in de batterij zit: 2026 dynamisch met salderen (goedkoop laden en duur terugleveren), een zomerdag in 2027 met een vast of variabel contract (laden met zonnestroom) en 2027 dynamisch (goedkoop inkopen voor eigen gebruik). Per dag de opbrengst, het gemiddelde per dag en de opbrengst per jaar met die regels, en waarom juist deze dag (de middelste). Dezelfde rekenkern als de grafieken op <https://enfy.nl/rekenhulp/thuisbatterij>.
 
 ### 1.6.4 (18-11-2026)
 - **Titel `enfy.nl energievergelijker (Nederland)`** (was `enfy …`), gelijk aan de servernaam en de bronvermelding.

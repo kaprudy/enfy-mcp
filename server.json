@@ -3,7 +3,7 @@
   "name": "nl.enfy/energievergelijker",
   "title": "enfy.nl energievergelijker (Nederland)",
   "description": "Compare all Dutch electricity and gas contracts, dynamic prices, grid costs and energy tax (Dutch).",
-  "version": "1.6.4",
+  "version": "1.6.6",
   "websiteUrl": "https://enfy.nl/energie-vergelijken-met-ai",
   "repository": {
     "url": "https://github.com/kaprudy/enfy-mcp",
