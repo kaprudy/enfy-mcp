@@ -3,9 +3,9 @@
 Een gratis, openbare [MCP-server](https://modelcontextprotocol.io) waarmee een AI-assistent (Claude, ChatGPT, Cursor, VS Code en andere MCP-clients) **stroom- en gascontracten van alle Nederlandse energieleveranciers** voor je kan doorrekenen. De bedragen komen uit dezelfde rekenkern als de vergelijker op [enfy.nl](https://enfy.nl): met energiebelasting, netbeheerkosten, teruglevering en btw, per maand doorgerekend.
 
 - **Adres:** `https://enfy.nl/mcp`
-- **Transport:** Streamable HTTP (`POST /mcp`), versie 1.6.6 (wijzigingen: [onderaan](#wijzigingen))
+- **Transport:** Streamable HTTP (`POST /mcp`), versie 1.7.0 (wijzigingen: [onderaan](#wijzigingen))
 - **Inloggen of API-sleutel:** niet nodig
-- **Alle tools zijn alleen-lezen.** Ze sluiten niets af, versturen niets en wijzigen niets.
+- **Alleen-lezen, op één tool na.** De rekentools sluiten niets af, versturen niets en wijzigen niets. Alleen `aanmelden_updates` doet iets: die stuurt een bevestigingsmail als je je wilt aanmelden voor mails over je contract (zie [Privacy](#privacy)).
 
 Deze repository bevat alleen documentatie, de registervermelding (`server.json`) en het icoon; geen code. De server zelf draait op enfy.nl.
 
@@ -98,8 +98,9 @@ gemini extensions install https://github.com/kaprudy/enfy-mcp
 
 ## Privacy
 
-- **Geen persoonsgegevens nodig.** Alleen de 4 cijfers van de postcode (daaruit leiden we de netbeheerder af). Een volledige postcode, huisnummer of toevoeging wordt geweigerd. Naam, adres, klantnummer of rekeningnummer zijn nooit nodig.
+- **Geen persoonsgegevens nodig om te rekenen.** Alleen de 4 cijfers van de postcode (daaruit leiden we de netbeheerder af). Een volledige postcode, huisnummer of toevoeging wordt geweigerd. Naam, adres, klantnummer of rekeningnummer zijn nooit nodig.
 - **Geen account, geen sleutel, geen cookies.** We bewaren geen IP-adressen en nooit het gesprek met de assistent. Van elke tool-aanroep bewaren we 90 dagen de tool, de meegestuurde getallen en keuzes (postcode alleen 4 cijfers, geen vrije tekst) en een samenvatting van ons antwoord, om onze antwoorden te controleren.
+- **Aanmelden voor mails (`aanmelden_updates`, sinds 1.7.0).** Alleen als jij dat vraagt, met je eigen e-mailadres. We sturen een bevestigingsmail die noemt welke mails je krijgt (herinnering als je contract afloopt, maandoverzicht, prijswijzigingen van je leverancier); pas na je klik (binnen 24 uur) maken we een account aan. Zonder klik verwijderen we het adres binnen 48 uur. Het adres komt niet in ons logboek en ons antwoord noemt het niet. Aanbiedingen kun je zo niet aanzetten. Zie https://enfy.nl/privacy#mcp-aanmelden.
 - Voor de limiet tellen we verzoeken onder een versleutelde code die elke dag verandert en na een minuut vervalt. Per dag tellen we alleen het aantal verzoeken per tool, per soort client en per uitkomst.
 - Links in antwoorden hebben `utm_source=mcp`, `utm_medium=ai` en de tool als `utm_campaign`. Zo zien we hoeveel mensen via een assistent op de site komen; de pagina's tonen dezelfde cijfers.
 - Volledige privacyverklaring: <https://enfy.nl/privacy#api>
@@ -141,10 +142,10 @@ Vrij te gebruiken met bronvermelding: noem "enfy.nl" als bron en link naar de pa
 
 **enfy.nl energievergelijker** is a free, public MCP server for the Dutch energy market. It lets an AI assistant compare electricity and gas contracts from all Dutch suppliers for a household's own usage, with energy tax, grid costs, feed-in and VAT included. Tool output is in Dutch (questions in English work too; the tool descriptions carry English keywords) and every answer links to a page on enfy.nl with the same figures. Inputs that were not given are listed in `defaults_used` (e.g. average usage or grid operator), so the assistant can ask a follow-up question.
 
-- **Endpoint:** `https://enfy.nl/mcp` (Streamable HTTP, version 1.6.6). No account or API key. Changelog: see [Wijzigingen](#wijzigingen) below.
-- **Tools (all read-only):** `vergelijk_energie` (cheapest contracts), `eigen_contract_vergelijken` (your current contract vs. the market), `dynamisch_of_vast` (dynamic vs. fixed), `netbeheerder` (grid operator and grid costs from a 4-digit postcode), `stroomprijs_vandaag` and `gasprijs_vandaag` (dynamic prices), `leverancier_tarieven` (one supplier's tariffs), `prijswijzigingen` (price changes), `prijshistorie` (price history), `energiebelasting` (energy tax), `thuisbatterij_berekenen` (does a home battery pay off) and `methode_en_dekking` (how we rank, coverage of suppliers and how current the data is, new in 1.6.0).
+- **Endpoint:** `https://enfy.nl/mcp` (Streamable HTTP, version 1.7.0). No account or API key. Changelog: see [Wijzigingen](#wijzigingen) below.
+- **Tools (read-only, except `aanmelden_updates`):** `vergelijk_energie` (cheapest contracts), `eigen_contract_vergelijken` (your current contract vs. the market), `dynamisch_of_vast` (dynamic vs. fixed), `netbeheerder` (grid operator and grid costs from a 4-digit postcode), `stroomprijs_vandaag` and `gasprijs_vandaag` (dynamic prices), `leverancier_tarieven` (one supplier's tariffs), `prijswijzigingen` (price changes), `prijshistorie` (price history), `energiebelasting` (energy tax), `thuisbatterij_berekenen` (does a home battery pay off), `methode_en_dekking` (how we rank, coverage of suppliers and how current the data is, new in 1.6.0) and `aanmelden_updates` (sign up for e-mails about your contract with double opt-in, new in 1.7.0).
 - **Connect:** Claude (Settings → Connectors → Add custom connector), ChatGPT (developer mode → create connector, no authentication), Claude Code (`claude mcp add --transport http energievergelijker https://enfy.nl/mcp`), Cursor and VS Code (HTTP server with the URL above, see the JSON snippets in the Dutch section), Gemini CLI (`gemini extensions install https://github.com/kaprudy/enfy-mcp`).
-- **Privacy:** no personal data. Only the first 4 digits of a postcode are accepted; house numbers are refused. No cookies, no IP addresses stored. Daily counts per tool, client family and outcome, and a minimised log of tool calls (numbers and choices only, no free text, no IP) kept for 90 days to check our answers.
+- **Privacy:** no personal data to calculate. Signing up for e-mails (`aanmelden_updates`) takes your e-mail address only when you ask for it, with a confirmation mail (double opt-in); the address is not logged. Only the first 4 digits of a postcode are accepted; house numbers are refused. No cookies, no IP addresses stored. Daily counts per tool, client family and outcome, and a minimised log of tool calls (numbers and choices only, no free text, no IP) kept for 90 days to check our answers.
 - **Ranking:** by first-year cost only. Any paid position is shown separately and labelled. Answers link only to enfy.nl (plus public sources such as the ACM or CBS as citations), never to suppliers or affiliate links.
 - **Sources and attribution:** suppliers' own published tariffs (validated), ENTSO-E day-ahead prices, Dutch tax authority, grid operators' tariffs and open data, KNMI weather. Free to use with attribution; aggregated figures under CC BY 4.0.
 - **Limits:** 60 MCP requests per minute per client by default (HTTP 429 with `Retry-After` above that).
@@ -153,6 +154,13 @@ Vrij te gebruiken met bronvermelding: noem "enfy.nl" als bron en link naar de pa
 ---
 
 ## Wijzigingen
+
+### 1.7.0 (19-11-2026)
+- Nieuwe tool `aanmelden_updates`: aanmelden voor mails van enfy.nl (herinnering 8 en 2 weken voordat je contract afloopt, maandoverzicht van de goedkoopste contracten, prijswijzigingen van je leverancier). Dubbele bevestiging: wij sturen een mail met precies wat je krijgt, pas na je klik gaat het in. Alleen met jouw toestemming en je eigen e-mailadres; het adres komt niet in ons logboek. Geen aanbiedingen.
+- De rekenende tools (`vergelijk_energie`, `eigen_contract_vergelijken`, `dynamisch_of_vast`) sluiten af met een korte tip dat aanmelden kan.
+- `eigen_contract_vergelijken`: de bandbreedte van een dynamisch contract staat in dezelfde volgorde als de jaarkosten, in hele euro's ("€ 341 tot € 759 duurder").
+- Links in de tekst: een punt of komma na een link valt niet meer in de link.
+- Dynamische contracten rekenen met de verwachte beursprijs voor de komende 12 maanden (gemiddelde van de termijnprijzen, dynamische-energieprijzen.nl) in plaats van het gemiddelde van de afgelopen 12 maanden; die en "zo duur als de afgelopen 30 dagen" staan als scenario in `dynamisch_of_vast`.
 
 ### 1.6.6 (19-11-2026)
 - **`thuisbatterij_berekenen`: verlies in de voorbeelddagen.** Per dag `loss_kwh` (verlies bij laden en ontladen), `grid_charge_price_micro` (gemiddelde prijs van de stroom die uit het net in de batterij ging) en `grid_charge_price_after_loss_micro` (wat een kWh uit de batterij daardoor kost: ÷ het rendement), en `day_profiles.round_trip_efficiency`. Het verlies zat al in de opbrengst en in de keuzes van de slimme sturing; nu staat het er ook als getal.
