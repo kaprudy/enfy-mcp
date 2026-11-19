@@ -76,6 +76,11 @@ claude mcp add --transport http energievergelijker https://enfy.nl/mcp
 }
 ```
 
+**Gemini CLI** (als extensie, met korte instructies voor het model)
+```bash
+gemini extensions install https://github.com/kaprudy/enfy-mcp
+```
+
 **Andere MCP-clients:** voeg een server toe met transport `http` (Streamable HTTP) en de URL hierboven.
 
 ## Voorbeeldvragen
@@ -138,7 +143,7 @@ Vrij te gebruiken met bronvermelding: noem "enfy.nl" als bron en link naar de pa
 
 - **Endpoint:** `https://enfy.nl/mcp` (Streamable HTTP, version 1.6.4). No account or API key. Changelog: see [Wijzigingen](#wijzigingen) below.
 - **Tools (all read-only):** `vergelijk_energie` (cheapest contracts), `eigen_contract_vergelijken` (your current contract vs. the market), `dynamisch_of_vast` (dynamic vs. fixed), `netbeheerder` (grid operator and grid costs from a 4-digit postcode), `stroomprijs_vandaag` and `gasprijs_vandaag` (dynamic prices), `leverancier_tarieven` (one supplier's tariffs), `prijswijzigingen` (price changes), `prijshistorie` (price history), `energiebelasting` (energy tax), `thuisbatterij_berekenen` (does a home battery pay off) and `methode_en_dekking` (how we rank, coverage of suppliers and how current the data is, new in 1.6.0).
-- **Connect:** Claude (Settings → Connectors → Add custom connector), ChatGPT (developer mode → create connector, no authentication), Claude Code (`claude mcp add --transport http energievergelijker https://enfy.nl/mcp`), Cursor and VS Code (HTTP server with the URL above, see the JSON snippets in the Dutch section).
+- **Connect:** Claude (Settings → Connectors → Add custom connector), ChatGPT (developer mode → create connector, no authentication), Claude Code (`claude mcp add --transport http energievergelijker https://enfy.nl/mcp`), Cursor and VS Code (HTTP server with the URL above, see the JSON snippets in the Dutch section), Gemini CLI (`gemini extensions install https://github.com/kaprudy/enfy-mcp`).
 - **Privacy:** no personal data. Only the first 4 digits of a postcode are accepted; house numbers are refused. No cookies, no IP addresses stored. Daily counts per tool, client family and outcome, and a minimised log of tool calls (numbers and choices only, no free text, no IP) kept for 90 days to check our answers.
 - **Ranking:** by first-year cost only. Any paid position is shown separately and labelled. Answers link only to enfy.nl (plus public sources such as the ACM or CBS as citations), never to suppliers or affiliate links.
 - **Sources and attribution:** suppliers' own published tariffs (validated), ENTSO-E day-ahead prices, Dutch tax authority, grid operators' tariffs and open data, KNMI weather. Free to use with attribution; aggregated figures under CC BY 4.0.
