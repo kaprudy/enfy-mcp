@@ -1,0 +1,11 @@
+{
+  "name": "enfy-nl",
+  "version": "1.6.4",
+  "description": "Compare all Dutch electricity and gas contracts, dynamic prices, grid costs and energy tax with enfy.nl (answers in Dutch).",
+  "mcpServers": {
+    "enfy-nl": {
+      "httpUrl": "https://enfy.nl/mcp"
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}
